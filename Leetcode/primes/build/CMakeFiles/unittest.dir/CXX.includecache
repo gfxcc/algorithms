@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gfxcc/Dropbox/Program/algorithm/Leetcode/primes/unittest.cc
+limits.h
+-
+gtest/gtest.h
+-
+

@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gfxcc/Dropbox/Program/algorithm/tree/traversal/traversal.h
+yong/tree.h
+-
+vector
+-
+stack
+-
+
+/Users/gfxcc/Dropbox/Program/algorithm/tree/traversal/unittest.cc
+traversal.h
+/Users/gfxcc/Dropbox/Program/algorithm/tree/traversal/traversal.h
+limits.h
+-
+gtest/gtest.h
+-
+time.h
+-
+stdlib.h
+-
+iostream
+-
+

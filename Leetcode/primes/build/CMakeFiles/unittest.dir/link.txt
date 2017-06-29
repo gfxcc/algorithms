@@ -1,0 +1,1 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -std=c++11  -Wall -g -ggdb -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/unittest.dir/unittest.cc.o  -o unittest  -lgtest -lgtest_main 
