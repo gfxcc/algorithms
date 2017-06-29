@@ -32,7 +32,7 @@ public:
     vector<int> weight_sum(n, 0);
     int sum = 0;
     for (int i = 0; i < n; i++) {
-      sum += nodes[i].w;
+      sum += nodes[i].weight;
       weight_sum[i] = sum;
     }
     return helper(nodes, 0, n - 1, dp, weight_sum);
@@ -47,7 +47,7 @@ public:
     vector<int> weight_sum(n, 0);
     int sum = 0;
     for (int i = 0; i < n; i++) {
-      sum += nodes[i].w;
+      sum += nodes[i].weight;
       weight_sum[i] = sum;
     }
     // dp
@@ -65,7 +65,7 @@ public:
           }
         }
       }
-
-      return dp[0][n - 1];
     }
-  };
+    return dp[0][n - 1];
+  }
+};
