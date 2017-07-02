@@ -47,6 +47,10 @@ int main(int argc, char const* argv[])
       }
       cout << endl;
     }
+    for (int i = 0; i < page_width; i++)
+      cout << "-";
+    cout << endl << endl;
+
   }
 
   return 0;

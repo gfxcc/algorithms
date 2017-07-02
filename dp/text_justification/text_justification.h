@@ -58,6 +58,9 @@ public:
     // preprocess widths
     int cnt = 0;
     for (int i = words.size() - 1; i >= 0; i--) {
+      // cannot construct valid result
+      if (words[i].size() > page_width)
+        return vector<vector<string>>();
       cnt += words[i].size();
       widths[i] = cnt;
     }
@@ -87,6 +90,9 @@ public:
     // preprocess widths
     int cnt = 0;
     for (int i = words.size() - 1; i >= 0; i--) {
+      // can not construct valid result
+      if (words[i].size() > page_width)
+        return vector<vector<string>>();
       cnt += words[i].size();
       widths[i] = cnt;
     }
