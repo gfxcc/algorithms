@@ -2,9 +2,10 @@
 
 class Solution {
   int Badness(int page_width, vector<string>& words, int start, int end) {
+    // you might want optimize this by preprocess
     int width = accumulate(words.begin() + start, words.begin() + end, 0, [](int a, string& b) {
           return a + b.size() + 1;
-        });
+        }) - 1;
     // not fit
     if (width > page_width)
       return numeric_limits<int>::max();
@@ -38,7 +39,7 @@ class Solution {
     return memo[start] = badness;
   }
 public:
-  vector<vector<string>> Justification(vector<string>& words, int page_width) {
+  vector<vector<string>> JustificationRec(vector<string>& words, int page_width) {
     vector<int> memo(words.size(), -1);
     vector<int> split_points(words.size());
 
@@ -51,6 +52,41 @@ public:
       vector<string> line(words.begin() + split, words.begin() + split_points[split]);
       lines.push_back(move(line));
       split = split_points[split];
+    }
+
+    return lines;
+  }
+
+  vector<vector<string>> Justification(vector<string>& words, int page_width) {
+    vector<int> dp(words.size() + 1, numeric_limits<int>::max());
+    vector<int> split_points(words.size());
+    dp[words.size()] = 0;
+    for (int i = words.size() - 1; i >= 0; i--) {
+
+      for (int j = i + 1; j <= words.size(); j++) {
+        int badness_j = Badness(page_width, words, i, j),
+            badness_suffix = dp[j];
+        // avoid overflow
+        if (numeric_limits<int>::max() - badness_j < badness_suffix) {
+          badness_j = numeric_limits<int>::max();
+        } else {
+          badness_j += badness_suffix;
+        }
+
+        if (dp[i] > badness_j) {
+          dp[i] = badness_j;
+          split_points[i] = j;
+        }
+      }
+    }
+
+    // build lines
+    vector<vector<string>> lines;
+    int split_point = 0;
+    while (split_point != words.size()) {
+      vector<string> line(words.begin() + split_point, words.begin() + split_points[split_point]);
+      lines.push_back(move(line));
+      split_point = split_points[split_point];
     }
 
     return lines;

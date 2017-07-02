@@ -39,8 +39,10 @@ int main(int argc, char const* argv[])
         // print space
         for (int i = 0; i < indent; i++)
           cout << " ";
-        if (one_more_pace--)
+        if (one_more_pace) {
           cout << " ";
+          one_more_pace--;
+        }
       }
       cout << endl;
     }
