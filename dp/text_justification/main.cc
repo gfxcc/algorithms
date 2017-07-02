@@ -20,6 +20,7 @@ int main(int argc, char const* argv[])
     cout << "input page_width:";
     int page_width;
     cin >> page_width;
+    cout << endl;
     if (page_width == 0)
       return 0;
 

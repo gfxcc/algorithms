@@ -1,19 +1,26 @@
 #include <yong/head.h>
 
 class Solution {
-  int Badness(int page_width, vector<string>& words, int start, int end) {
-    // you might want optimize this by preprocess
-    int width = accumulate(words.begin() + start, words.begin() + end, 0, [](int a, string& b) {
-          return a + b.size() + 1;
-        }) - 1;
+  //
+  // if not fit: INT_MAX
+  // else: (page_width - width_token) ^ 3
+  // avoid int overflow
+  //
+  int Badness(int page_width, vector<string>& words, vector<int>& widths, int start, int end) {
+    int width = widths[start] - widths[end] + end - start - 1;
     // not fit
     if (width > page_width)
       return numeric_limits<int>::max();
     //
-    return pow(page_width - width, 3);
+    return (page_width - width <= pow(numeric_limits<int>::max(), 1 / 3.0)) ?
+      pow(page_width - width, 3) : numeric_limits<int>::max();
   }
 
-  int helper(vector<string>& words, vector<int>& split_points, vector<int>& memo, int start, int page_width) {
+  //
+  // memorized dp
+  //
+  int helper(vector<string>& words, vector<int>& split_points, vector<int>& memo,
+      vector<int>& widths, int start, int page_width) {
     if (memo[start] != -1)
       return memo[start];
     if (start >= words.size())
@@ -21,8 +28,8 @@ class Solution {
     int badness = numeric_limits<int>::max(), split_point = 0;
     for (int j = start + 1; j <= words.size(); j++) {
       // avoid overflow
-      int badness_j = Badness(page_width, words, start, j),
-          badness_suffix = helper(words, split_points, memo, j, page_width);
+      int badness_j = Badness(page_width, words, widths, start, j),
+          badness_suffix = helper(words, split_points, memo, widths, j, page_width);
       if (numeric_limits<int>::max() - badness_j >= badness_suffix) {
         badness_j += badness_suffix;
       } else {
@@ -38,12 +45,24 @@ class Solution {
     split_points[start] = split_point;
     return memo[start] = badness;
   }
+
 public:
+  //
+  // memorized dp based on recursion
+  //
   vector<vector<string>> JustificationRec(vector<string>& words, int page_width) {
     vector<int> memo(words.size(), -1);
     vector<int> split_points(words.size());
+    vector<int> widths(words.size() + 1, 0);
 
-    helper(words, split_points, memo, 0, page_width);
+    // preprocess widths
+    int cnt = 0;
+    for (int i = words.size() - 1; i >= 0; i--) {
+      cnt += words[i].size();
+      widths[i] = cnt;
+    }
+
+    helper(words, split_points, memo, widths, 0, page_width);
 
     // build lines
     vector<vector<string>> lines;
@@ -57,14 +76,26 @@ public:
     return lines;
   }
 
+  //
+  // bottom to top dp based on loop
+  //
   vector<vector<string>> Justification(vector<string>& words, int page_width) {
     vector<int> dp(words.size() + 1, numeric_limits<int>::max());
     vector<int> split_points(words.size());
+    vector<int> widths(words.size() + 1, 0);
+
+    // preprocess widths
+    int cnt = 0;
+    for (int i = words.size() - 1; i >= 0; i--) {
+      cnt += words[i].size();
+      widths[i] = cnt;
+    }
+
     dp[words.size()] = 0;
     for (int i = words.size() - 1; i >= 0; i--) {
 
       for (int j = i + 1; j <= words.size(); j++) {
-        int badness_j = Badness(page_width, words, i, j),
+        int badness_j = Badness(page_width, words, widths, i, j),
             badness_suffix = dp[j];
         // avoid overflow
         if (numeric_limits<int>::max() - badness_j < badness_suffix) {
