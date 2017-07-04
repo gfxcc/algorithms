@@ -34,16 +34,20 @@ int main(int argc, char const* argv[])
         cout << line[0] << endl;
         continue;
       }
-      int space = page_width - width_word, one_more_pace = space % (line.size() - 1), indent = space / (line.size() - 1);
-      for (auto& word : line) {
+      int space = page_width - width_word, one_more_space = space % (line.size() - 1), indent = space / (line.size() - 1);
+      int cnt = 0;
+      for (int j = 0; j < line.size(); j++) {
+        string& word = line[j];
         cout << word;
         // print space
         for (int i = 0; i < indent; i++)
           cout << " ";
-        if (one_more_pace) {
+        //i
+        if (cnt < one_more_space && one_more_space && ((j % ((line.size() - 1) / one_more_space)) == 0) && j != line.size() - 1) {
           cout << " ";
-          one_more_pace--;
+          cnt++;
         }
+
       }
       cout << endl;
     }
