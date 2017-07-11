@@ -40,7 +40,7 @@ int main(int argc, char const* argv[])
         string& word = line[j];
         cout << word;
         // print space
-        for (int i = 0; i < indent; i++)
+        for (int i = 0; i < indent && j + 1 != line.size(); i++)
           cout << " ";
         //i
         if (cnt < one_more_space && one_more_space && ((j % ((line.size() - 1) / one_more_space)) == 0) && j != line.size() - 1) {

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gfxcc/Dropbox/Program/algorithm/hash/meeting_room/manage.h
+yong/head.h
+-
+
+/Users/gfxcc/Dropbox/Program/algorithm/hash/meeting_room/unittest.cc
+manage.h
+/Users/gfxcc/Dropbox/Program/algorithm/hash/meeting_room/manage.h
+limits.h
+-
+gtest/gtest.h
+-
+
