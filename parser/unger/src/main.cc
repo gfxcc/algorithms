@@ -9,12 +9,17 @@ using namespace std;
 
 int main() {
 
-  Parser parser("./data/grammar.dat");
+    Parser parser("../data/grammar.dat");
 
-  parser.print_grammar();
+    parser.print_grammar();
 
-  printf("----parsing process----\n");
-  parser.parse("E", "a*a+a");
+    printf("----parsing process----\n");
 
-  return 0;
+    string input;
+    while (true) {
+        cin >> input;
+        parser.parse("E", input);
+    }
+
+    return 0;
 }
