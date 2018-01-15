@@ -29,19 +29,20 @@ bool Parser::parse(const string& pattern, const string& input) {
     return rc;
 }
 
+// dfs
 bool Parser::parse(const string& pattern, const string& input, Node* node) {
 
     if (pattern == input && pattern.size() == 1) {
-        node->children.push_back(make_shared<Node>(pattern));
+        //node->children.push_back(make_shared<Node>(pattern));
         return true;
     }
 
     if (pattern.size() > input.size())
         return false;
     if (pattern.size() == 1) {
-        for (auto& right : grammar_[pattern[0]]) {
-            node->children.push_back(make_shared<Node>(right));
-            if (parse(right, input, node->children.back().get())) {
+        for (auto& input_left : grammar_[pattern[0]]) {
+            node->children.push_back(make_shared<Node>(input_left));
+            if (parse(input_left, input, node->children.back().get())) {
                 return true;
             }
             node->children.pop_back();
@@ -49,15 +50,24 @@ bool Parser::parse(const string& pattern, const string& input, Node* node) {
         return false;
     }
 
-
     for (int len = 1; len < input.size(); len++) {
-        string left = pattern.substr(0, 1), left_remain = pattern.substr(1);
-        string right = input.substr(0, len), right_remain = input.substr(len);
+        string pattern_left = pattern.substr(0, 1), pattern_remain = pattern.substr(1);
+        string input_left = input.substr(0, len), input_remain = input.substr(len);
 
-        node->children.push_back(make_shared<Node>(left));
-        if (parse(left, right, node->children.back().get()) &&
-                parse(left_remain, right_remain, node)) {
+        node->children.push_back(make_shared<Node>(pattern_left));
+        auto ptr_left = node->children.back().get();
+        auto ptr_right = node;
+
+        if (pattern_remain.size() == 1) {
+            node->children.push_back(make_shared<Node>(pattern_remain));
+            ptr_right = node->children.back().get();
+        }
+        if (parse(pattern_left, input_left, ptr_left) &&
+                parse(pattern_remain, input_remain, ptr_right)) {
             return true;
+        }
+        if (pattern_remain.size() == 1) {
+            node->children.pop_back();
         }
         node->children.pop_back();
     }

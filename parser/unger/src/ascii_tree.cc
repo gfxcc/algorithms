@@ -14,21 +14,23 @@ Tree::Tree() {
     root_ = make_shared<Node>("");
 }
 
-bool Tree::load_binary_tree() {
-    return false;
-}
-
-
 Node* Tree::get_root() {
     return root_.get();
 }
 
-void Tree::print_tree() {
+void Tree::print_tree(bool vertical/* = true*/) {
     pre_order(root_.get());
 }
 
+
+//
+// internal functions
+//
 void Tree::pre_order(Node* node) {
-    printf("(%s)\n", node->data.c_str());
+    if (node->children.empty())
+        printf("[%s]\n", node->data.c_str());
+    else
+        printf("(%s)\n", node->data.c_str());
 
     for (int i = 0; i != node->children.size(); i++) {
         auto child = node->children[i];
@@ -40,10 +42,7 @@ void Tree::pre_order(Node* node) {
 }
 
 void Tree::push_level(char c) {
-    prefix.push_back(' ');
-    prefix.push_back(c);
-    prefix.push_back(' ');
-    prefix.push_back(' ');
+    prefix += " " + string(1, c) + "  ";
 }
 
 void Tree::pop_level() {

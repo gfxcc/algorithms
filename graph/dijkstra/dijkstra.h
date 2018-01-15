@@ -1,5 +1,10 @@
 #include <yong/head.h>
 
+
+// time complexity
+// Vertex, Edge
+// E + V*Log(V)
+//
 class Graph {
 public:
   Graph(vector<pair<string, string>>& edges, vector<int>& weights) {
@@ -12,11 +17,15 @@ public:
     }
   }
 
-  vector<pair<string, int>> FindPath(const string& source, const string& destination) {
-    priority_queue<pair<int, string>, vector<pair<int, string>>, greater<pair<int, string>>> pq;
+  vector<pair<string, int>> FindPath(const string&               source,
+                                     const string&               destination) {
+
+    priority_queue<pair<int, string>,
+                        vector<pair<int, string>>,
+                        greater<pair<int, string>>> pq;
     unordered_map<string, int> dist;
     unordered_map<string, string> prev;
-
+x
     pq.push({0, source});
     dist[source] = 0;
 
@@ -29,7 +38,6 @@ public:
       for (auto iter = edges_[u].begin(); iter != edges_[u].end(); iter++) {
         string v = iter->first;
         int weight = iter->second;
-
         if (dist.find(v) == dist.end() || dist[v] > dist[u] + weight) {
           dist[v] = dist[u] + weight;
           prev[v] = u;
@@ -62,15 +70,5 @@ private:
 };
 
 /*
-
-int main() {
-  vector<pair<string, string>> edges = {{"1", "3"}, {"1", "6"}, {"1", "2"},
-    {"6", "5"}, {"6", "3"}, {"5", "4"}, {"3", "4"}, {"3", "2"}, {"2", "4"}};
-  vector<int> weights = {9, 14, 7, 9, 2, 6, 11, 10, 15};
-
-  Graph g(edges, weights);
-  auto path = g.FindPath("1", "5");
-  return 0;
-}
 
 */
